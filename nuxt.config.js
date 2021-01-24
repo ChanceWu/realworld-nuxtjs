@@ -57,6 +57,6 @@ module.exports = {
     server: {
         // host: 'localhost', // 仅能本机访问
         host: '0.0.0.0',
-        port: 3000
+        port: 3005
     }
 }
