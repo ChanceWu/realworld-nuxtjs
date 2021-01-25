@@ -27,7 +27,7 @@
                                         tab: 'your_feed'
                                     }
                                 }"
-                            >Your Feed</nuxt-link>
+                            >我的文章</nuxt-link>
                         </li>
                         <li class="nav-item">
                             <nuxt-link
@@ -42,7 +42,7 @@
                                         tab: 'global_feed'
                                     }
                                 }"
-                            >Global Feed</nuxt-link>
+                            >全部文章</nuxt-link>
                         </li>
                         <li v-if="tag" class="nav-item">
                             <nuxt-link
@@ -78,7 +78,6 @@
                             <img :src="article.author.image" />
                         </nuxt-link>
                         <div class="info">
-                            <a href="" >Eric Simons</a>
                             <nuxt-link class="author" :to="{
                                 name: 'profile',
                                 params: {
@@ -109,8 +108,16 @@
                         <h1>{{article.title}}</h1>
                         <p>{{article.description}}</p>
                         <span>Read more...</span>
+                        <ul class="tag-list">
+                            <!-- ngRepeat: tag in $ctrl.article.tagList -->
+                            <li class="tag-default tag-pill tag-outline" v-for="tag in article.tagList" :key="tag">
+                                {{tag}}
+                            </li>
+                            <!-- end ngRepeat: tag in $ctrl.article.tagList -->
+                        </ul>
                     </nuxt-link>
                 </div>
+                <div v-if="!articles.length">没有数据</div>
 
                 <!-- 分页列表 -->
                 <nav>
@@ -143,7 +150,7 @@
 
             <div class="col-md-3">
                 <div class="sidebar">
-                <p>Popular Tags</p>
+                <p>热门标签</p>
 
                 <div class="tag-list">
                     <nuxt-link
@@ -182,13 +189,19 @@ export default {
         const page = Number.parseInt(query.page||1)
         const limit = 10
         const { tag, tab = 'global_feed' } = query
-        const loadArticles = store.state.user && tab === 'your_feed'?getFeedArticles:getArticles
+        // const loadArticles = store.state.user && tab === 'your_feed'?getFeedArticles:getArticles
+        const _params = tab === 'your_feed' ? {
+            tag,
+            limit,
+            offset: (page - 1) * limit,
+            author: store.state.user.username
+        } : {
+            limit,
+            offset: (page - 1) * limit,
+            tag
+        }
         const [articleRes, tagRes] = await Promise.all([
-            loadArticles({
-                limit,
-                offset: (page - 1) * limit,
-                tag
-            }),
+            getArticles(_params),
             getTags()
         ])
 
@@ -198,7 +211,7 @@ export default {
         articles.forEach(article => article.favoriteDisabled = false)
 
         return {
-            articles,
+            articles: [...articles],
             articlesCount,
             tags,
             limit,

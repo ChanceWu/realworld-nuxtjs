@@ -17,3 +17,21 @@ export const register = data => {
         data
     })
 }
+
+// 获取用户信息
+export const getUserInfo = data => {
+    return request({
+        method: 'get',
+        url: '/api/user',
+        data
+    })
+}
+
+// 修改用户信息
+export const updateUserInfo = data => {
+    return request({
+        method: 'put',
+        url: '/api/user',
+        data
+    })
+}

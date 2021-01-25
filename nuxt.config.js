@@ -37,6 +37,10 @@ module.exports = {
                             component: resolve(__dirname, 'pages/settings/')
                         }, {
                             path: '/editor',
+                            name: 'editor_new',
+                            component: resolve(__dirname, 'pages/editor/')
+                        }, {
+                            path: '/editor/:slug',
                             name: 'editor',
                             component: resolve(__dirname, 'pages/editor/')
                         }, {

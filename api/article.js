@@ -47,10 +47,54 @@ export const getArticle = slug => {
     })
 }
 
+// 获修改文章详情
+export const updateArticle = (slug, data) => {
+    return request({
+        method: 'put',
+        url: `/api/articles/${slug}`,
+        data
+
+    })
+}
+
+// 创建文章
+export const addArticle = data => {
+    return request({
+        method: 'post',
+        url: `/api/articles`,
+        data
+    })
+}
+
+// 删除文章
+export const delArticle = slug => {
+    return request({
+        method: 'delete',
+        url: `/api/articles/${slug}`
+    })
+}
+
 // 获取文章评论
 export const getComments = slug => {
     return request({
         method: 'GET',
         url: `/api/articles/${slug}/comments`
+    })
+}
+
+// 新增文章评论
+export const addComments = (slug, data) => {
+    return request({
+        method: 'POST',
+        url: `/api/articles/${slug}/comments`,
+        data
+    })
+}
+
+// 新增文章评论
+export const delComments = (slug, commentid) => {
+    return request({
+        method: 'DELETE',
+        url: `/api/articles/${slug}/comments/${commentid}`
     })
 }
